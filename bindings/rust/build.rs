@@ -7,8 +7,14 @@ fn main() {
         .flag_if_supported("-Wno-unused-parameter")
         .flag_if_supported("-Wno-unused-but-set-variable")
         .flag_if_supported("-Wno-trigraphs");
+
     let parser_path = src_dir.join("parser.c");
     c_config.file(&parser_path);
+
+
+    if std::env::var("TARGET").unwrap() == "wasm32-unknown-unknown" {
+        tree_sitter_wasm_build_tool::add_wasm_headers(&mut c_config).unwrap();
+    }
 
     // If your language uses an external scanner written in C,
     // then include this block of code:

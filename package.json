@@ -36,5 +36,11 @@
     "test": "tree-sitter test",
     "install": "node-gyp-build",
     "prebuildify": "prebuildify --napi --strip"
-  }
+  },
+  "tree-sitter": [{
+    "scoop": "ic10",
+    "file-types": ["ic10"],
+    "highlights": ["queries/highlights.scm"],
+    "locals": ["queries/locals.scm"]
+  }]
 }
