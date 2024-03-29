@@ -1,0 +1,180 @@
+
+<!doctype HTML>
+<head>
+  <title>Tree-sitter Highlighting</title>
+  <style>
+    body {
+      font-family: monospace
+    }
+    .line-number {
+      user-select: none;
+      text-align: right;
+      color: rgba(27,31,35,.3);
+      padding: 0 10px;
+    }
+    .line {
+      white-space: pre;
+    }
+  </style>
+</head>
+<body>
+
+<table>
+<tr><td class=line-number>1</td><td class=line><span style='font-style: italic;color: #8a8a8a'># Reads and stores atmo data for up to 6 devices </span>
+</td></tr>
+<tr><td class=line-number>2</td><td class=line><span style='font-style: italic;color: #8a8a8a'># in one place.</span>
+</td></tr>
+<tr><td class=line-number>3</td><td class=line><span style='font-style: italic;color: #8a8a8a'># Data is stored in Column-major order so values </span>
+</td></tr>
+<tr><td class=line-number>4</td><td class=line><span style='font-style: italic;color: #8a8a8a'># of like type are grouped together on the stack</span>
+</td></tr>
+<tr><td class=line-number>5</td><td class=line><span style='font-style: italic;color: #8a8a8a'># in order of device Pin.</span>
+</td></tr>
+<tr><td class=line-number>6</td><td class=line><span style='font-style: italic;color: #8a8a8a'># 0-5   -&gt; Temperature</span>
+</td></tr>
+<tr><td class=line-number>7</td><td class=line><span style='font-style: italic;color: #8a8a8a'># 6-11  -&gt; Pressure</span>
+</td></tr>
+<tr><td class=line-number>8</td><td class=line><span style='font-style: italic;color: #8a8a8a'># 12-17 -&gt; Volume</span>
+</td></tr>
+<tr><td class=line-number>9</td><td class=line><span style='font-style: italic;color: #8a8a8a'># 18-23 -&gt; TotalMoles</span>
+</td></tr>
+<tr><td class=line-number>10</td><td class=line><span style='font-style: italic;color: #8a8a8a'># 24-29 -&gt; SpecificHeatCapacity (calculated)</span>
+</td></tr>
+<tr><td class=line-number>11</td><td class=line><span style='font-style: italic;color: #8a8a8a'># 30-35 -&gt; device ReferenceId</span>
+</td></tr>
+<tr><td class=line-number>12</td><td class=line><span style='font-style: italic;color: #8a8a8a'># 36-41 -&gt; device PrefabHash</span>
+</td></tr>
+<tr><td class=line-number>13</td><td class=line><span style='font-style: italic;color: #8a8a8a'>#</span>
+</td></tr>
+<tr><td class=line-number>14</td><td class=line><span style='font-style: italic;color: #8a8a8a'># for devices like the Gas Sensor </span>
+</td></tr>
+<tr><td class=line-number>15</td><td class=line><span style='font-style: italic;color: #8a8a8a'># Volume and TotalMoles are unavailable and read 0</span>
+</td></tr>
+<tr><td class=line-number>16</td><td class=line>
+</td></tr>
+<tr><td class=line-number>17</td><td class=line><span style='color: #5f00d7'>move</span> <span style='text-decoration: underline;'>sp</span> <span style='font-weight: bold;color: #875f00'>0</span> <span style='font-style: italic;color: #8a8a8a'>#clear stack (incase of previous program)</span>
+</td></tr>
+<tr><td class=line-number>18</td><td class=line><span style='color: #5f00d7'>push</span> <span style='font-weight: bold;color: #875f00'>0</span>
+</td></tr>
+<tr><td class=line-number>19</td><td class=line><span style='color: #5f00d7'>brlt</span> <span style='text-decoration: underline;'>sp</span> <span style='font-weight: bold;color: #875f00'>42</span> <span style='font-weight: bold;color: #875f00'>-1</span> <span style='font-style: italic;color: #8a8a8a'># 6 devices 7 values each</span>
+</td></tr>
+<tr><td class=line-number>20</td><td class=line>loop:
+</td></tr>
+<tr><td class=line-number>21</td><td class=line><span style='color: #5f00d7'>yield</span>
+</td></tr>
+<tr><td class=line-number>22</td><td class=line><span style='color: #5f00d7'>move</span> <span style='text-decoration: underline;'>r15</span> <span style='font-weight: bold;color: #875f00'>0</span>
+</td></tr>
+<tr><td class=line-number>23</td><td class=line>deviceLoop:
+</td></tr>
+<tr><td class=line-number>24</td><td class=line><span style='color: #5f00d7'>move</span> <span style='text-decoration: underline;'>r14</span> <span style='font-weight: bold;color: #875f00'>0</span>
+</td></tr>
+<tr><td class=line-number>25</td><td class=line><span style='color: #5f00d7'>brdns</span> dr15 <span style='font-weight: bold;color: #875f00'>39</span>
+</td></tr>
+<tr><td class=line-number>26</td><td class=line><span style='color: #5f00d7'>s</span> db <span style='color: #875f00'>Setting</span> <span style='text-decoration: underline;'>r15</span> <span style='font-style: italic;color: #8a8a8a'>#debug device if there is an error</span>
+</td></tr>
+<tr><td class=line-number>27</td><td class=line><span style='color: #5f00d7'>l</span> <span style='text-decoration: underline;'>r0</span> dr15 <span style='color: #875f00'>Temperature</span>
+</td></tr>
+<tr><td class=line-number>28</td><td class=line><span style='color: #5f00d7'>jal</span> store <span style='font-style: italic;color: #8a8a8a'>#store Temperature</span>
+</td></tr>
+<tr><td class=line-number>29</td><td class=line><span style='color: #5f00d7'>l</span> <span style='text-decoration: underline;'>r0</span> dr15 <span style='color: #875f00'>Pressure</span>
+</td></tr>
+<tr><td class=line-number>30</td><td class=line><span style='color: #5f00d7'>jal</span> store <span style='font-style: italic;color: #8a8a8a'>#store Pressure</span>
+</td></tr>
+<tr><td class=line-number>31</td><td class=line><span style='color: #5f00d7'>l</span> <span style='text-decoration: underline;'>r2</span> dr15 <span style='color: #875f00'>PrefabHash</span>
+</td></tr>
+<tr><td class=line-number>32</td><td class=line><span style='color: #5f00d7'>move</span> <span style='text-decoration: underline;'>r0</span> <span style='font-weight: bold;color: #875f00'>0</span>
+</td></tr>
+<tr><td class=line-number>33</td><td class=line><span style='color: #5f00d7'>beq</span> <span style='text-decoration: underline;'>r2</span> <span style='font-weight: bold;color: #875f00'><span style='color: #005fd7'>HASH(&quot;<span style='color: #008700'>StructureGasSensor</span>&quot;)</span></span> skipGasSensor
+</td></tr>
+<tr><td class=line-number>34</td><td class=line><span style='color: #5f00d7'>l</span> <span style='text-decoration: underline;'>r0</span> dr15 <span style='color: #875f00'>Volume</span>
+</td></tr>
+<tr><td class=line-number>35</td><td class=line><span style='color: #5f00d7'>jal</span> store
+</td></tr>
+<tr><td class=line-number>36</td><td class=line><span style='color: #5f00d7'>l</span> <span style='text-decoration: underline;'>r0</span> dr15 <span style='color: #875f00'>TotalMoles</span>
+</td></tr>
+<tr><td class=line-number>37</td><td class=line><span style='color: #5f00d7'>jal</span> store
+</td></tr>
+<tr><td class=line-number>38</td><td class=line>sensorSkipEnd:
+</td></tr>
+<tr><td class=line-number>39</td><td class=line><span style='color: #5f00d7'>l</span> <span style='text-decoration: underline;'>r1</span> dr15 <span style='font-weight: bold;color: #875f00'><span style='font-weight: bold;'>LogicType.RatioOxygen</span></span>
+</td></tr>
+<tr><td class=line-number>40</td><td class=line><span style='color: #5f00d7'>mul</span> <span style='text-decoration: underline;'>r0</span> <span style='text-decoration: underline;'>r1</span> <span style='font-weight: bold;color: #875f00'>21.1</span>
+</td></tr>
+<tr><td class=line-number>41</td><td class=line><span style='color: #5f00d7'>l</span> <span style='text-decoration: underline;'>r1</span> dr15 <span style='color: #875f00'>RatioCarbonDioxide</span>
+</td></tr>
+<tr><td class=line-number>42</td><td class=line><span style='color: #5f00d7'>mul</span> <span style='text-decoration: underline;'>r1</span> <span style='text-decoration: underline;'>r1</span> <span style='font-weight: bold;color: #875f00'>28.2</span>
+</td></tr>
+<tr><td class=line-number>43</td><td class=line><span style='color: #5f00d7'>add</span> <span style='text-decoration: underline;'>r0</span> <span style='text-decoration: underline;'>r0</span> <span style='text-decoration: underline;'>r1</span>
+</td></tr>
+<tr><td class=line-number>44</td><td class=line><span style='color: #5f00d7'>l</span> <span style='text-decoration: underline;'>r0</span> dr15 <span style='color: #875f00'>RatioNitrogen</span>
+</td></tr>
+<tr><td class=line-number>45</td><td class=line><span style='color: #5f00d7'>mul</span> <span style='text-decoration: underline;'>r1</span> <span style='text-decoration: underline;'>r1</span> <span style='font-weight: bold;color: #875f00'>20.6</span>
+</td></tr>
+<tr><td class=line-number>46</td><td class=line><span style='color: #5f00d7'>add</span> <span style='text-decoration: underline;'>r0</span> <span style='text-decoration: underline;'>r0</span> <span style='text-decoration: underline;'>r1</span>
+</td></tr>
+<tr><td class=line-number>47</td><td class=line><span style='color: #5f00d7'>l</span> <span style='text-decoration: underline;'>r1</span> dr15 <span style='color: #875f00'>RatioPollutant</span>
+</td></tr>
+<tr><td class=line-number>48</td><td class=line><span style='color: #5f00d7'>mul</span> <span style='text-decoration: underline;'>r1</span> <span style='text-decoration: underline;'>r1</span> <span style='font-weight: bold;color: #875f00'>24.8</span>
+</td></tr>
+<tr><td class=line-number>49</td><td class=line><span style='color: #5f00d7'>add</span> <span style='text-decoration: underline;'>r0</span> <span style='text-decoration: underline;'>r0</span> <span style='text-decoration: underline;'>r1</span>
+</td></tr>
+<tr><td class=line-number>50</td><td class=line><span style='color: #5f00d7'>l</span> <span style='text-decoration: underline;'>r1</span> dr15 <span style='color: #875f00'>RatioVolatiles</span>
+</td></tr>
+<tr><td class=line-number>51</td><td class=line><span style='color: #5f00d7'>mul</span> <span style='text-decoration: underline;'>r1</span> <span style='text-decoration: underline;'>r1</span> <span style='font-weight: bold;color: #875f00'>20.4</span>
+</td></tr>
+<tr><td class=line-number>52</td><td class=line><span style='color: #5f00d7'>add</span> <span style='text-decoration: underline;'>r0</span> <span style='text-decoration: underline;'>r0</span> <span style='text-decoration: underline;'>r1</span>
+</td></tr>
+<tr><td class=line-number>53</td><td class=line><span style='color: #5f00d7'>l</span> <span style='text-decoration: underline;'>r1</span> dr15 <span style='color: #875f00'>RatioWater</span>
+</td></tr>
+<tr><td class=line-number>54</td><td class=line><span style='color: #5f00d7'>mul</span> <span style='text-decoration: underline;'>r1</span> <span style='text-decoration: underline;'>r1</span> <span style='font-weight: bold;color: #875f00'>72.0</span>
+</td></tr>
+<tr><td class=line-number>55</td><td class=line><span style='color: #5f00d7'>add</span> <span style='text-decoration: underline;'>r0</span> <span style='text-decoration: underline;'>r0</span> <span style='text-decoration: underline;'>r1</span>
+</td></tr>
+<tr><td class=line-number>56</td><td class=line><span style='color: #5f00d7'>l</span> <span style='text-decoration: underline;'>r1</span> dr15 <span style='color: #875f00'>RatioNitrousOxide</span>
+</td></tr>
+<tr><td class=line-number>57</td><td class=line><span style='color: #5f00d7'>mul</span> <span style='text-decoration: underline;'>r1</span> <span style='text-decoration: underline;'>r1</span> <span style='font-weight: bold;color: #875f00'>37.2</span>
+</td></tr>
+<tr><td class=line-number>58</td><td class=line><span style='color: #5f00d7'>add</span> <span style='text-decoration: underline;'>r0</span> <span style='text-decoration: underline;'>r0</span> <span style='text-decoration: underline;'>r1</span>
+</td></tr>
+<tr><td class=line-number>59</td><td class=line><span style='color: #5f00d7'>jal</span> store <span style='font-style: italic;color: #8a8a8a'>#store specific heat capacity of gas mix</span>
+</td></tr>
+<tr><td class=line-number>60</td><td class=line><span style='color: #5f00d7'>l</span> <span style='text-decoration: underline;'>r0</span> dr15 ReferenceId
+</td></tr>
+<tr><td class=line-number>61</td><td class=line><span style='color: #5f00d7'>jal</span> store <span style='font-style: italic;color: #8a8a8a'>#store device ID</span>
+</td></tr>
+<tr><td class=line-number>62</td><td class=line><span style='color: #5f00d7'>move</span> <span style='text-decoration: underline;'>r0</span> <span style='text-decoration: underline;'>r2</span>
+</td></tr>
+<tr><td class=line-number>63</td><td class=line><span style='color: #5f00d7'>jal</span> store <span style='font-style: italic;color: #8a8a8a'>#store PrefabHash</span>
+</td></tr>
+<tr><td class=line-number>64</td><td class=line><span style='color: #5f00d7'>add</span> <span style='text-decoration: underline;'>r15</span> <span style='text-decoration: underline;'>r15</span> <span style='font-weight: bold;color: #875f00'>1</span>
+</td></tr>
+<tr><td class=line-number>65</td><td class=line><span style='color: #5f00d7'>ble</span> <span style='text-decoration: underline;'>r15</span> <span style='font-weight: bold;color: #875f00'>5</span> deviceLoop
+</td></tr>
+<tr><td class=line-number>66</td><td class=line><span style='color: #5f00d7'>j</span> loop
+</td></tr>
+<tr><td class=line-number>67</td><td class=line>store:
+</td></tr>
+<tr><td class=line-number>68</td><td class=line><span style='color: #5f00d7'>mul</span> <span style='text-decoration: underline;'>r13</span> <span style='text-decoration: underline;'>r14</span> <span style='text-decoration: underline;'>r15</span>
+</td></tr>
+<tr><td class=line-number>69</td><td class=line><span style='color: #5f00d7'>add</span> <span style='text-decoration: underline;'>r13</span> <span style='text-decoration: underline;'>r13</span> <span style='text-decoration: underline;'>r15</span>
+</td></tr>
+<tr><td class=line-number>70</td><td class=line><span style='color: #5f00d7'>poke</span> <span style='text-decoration: underline;'>r13</span> <span style='text-decoration: underline;'>r0</span>
+</td></tr>
+<tr><td class=line-number>71</td><td class=line><span style='color: #5f00d7'>add</span> <span style='text-decoration: underline;'>r14</span> <span style='text-decoration: underline;'>r14</span> <span style='font-weight: bold;color: #875f00'>1</span>
+</td></tr>
+<tr><td class=line-number>72</td><td class=line><span style='color: #5f00d7'>j</span> <span style='text-decoration: underline;'>ra</span>
+</td></tr>
+<tr><td class=line-number>73</td><td class=line>skipGasSensor:
+</td></tr>
+<tr><td class=line-number>74</td><td class=line><span style='color: #5f00d7'>move</span> <span style='text-decoration: underline;'>r0</span> <span style='font-weight: bold;color: #875f00'>0</span>
+</td></tr>
+<tr><td class=line-number>75</td><td class=line><span style='color: #5f00d7'>jal</span> store
+</td></tr>
+<tr><td class=line-number>76</td><td class=line><span style='color: #5f00d7'>jal</span> store
+</td></tr>
+<tr><td class=line-number>77</td><td class=line><span style='color: #5f00d7'>j</span> sensorSkipEnd
+</td></tr>
+</table>
+
+</body>
+
